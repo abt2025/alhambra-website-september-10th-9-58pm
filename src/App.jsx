@@ -5,6 +5,8 @@ import CommunicationWidget from './CommunicationWidget.jsx';
 import EnhancedServices from './EnhancedServices.jsx';
 import SocialMediaIntegration from './SocialMediaIntegration.jsx';
 import OriginalContent from './OriginalContent.jsx';
+import StockTicker from './StockTicker.jsx';
+import NewsScroller from './NewsScroller.jsx';
 
 const AlhambraBankApp = () => {
   // Core state management
@@ -1288,8 +1290,13 @@ const AlhambraBankApp = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Stock Market Ticker */}
+      <div className="fixed top-0 left-0 right-0 z-40">
+        <StockTicker />
+      </div>
+      
       {/* Navigation Header */}
-      <nav className="bg-white text-red-800 py-3 px-4 fixed top-0 left-0 right-0 z-50 shadow-lg border-b border-red-200">
+      <nav className="bg-white text-red-800 py-3 px-4 fixed top-12 left-0 right-0 z-50 shadow-lg border-b border-red-200">
         <div className="container mx-auto flex flex-wrap items-center justify-between">
           {/* Language Selector */}
           <select
@@ -1381,6 +1388,11 @@ const AlhambraBankApp = () => {
         </div>
       </nav>
 
+      {/* Economic News Scroller */}
+      <div className="fixed top-20 left-0 right-0 z-30">
+        <NewsScroller />
+      </div>
+
       {/* Onboarding Modal */}
       {showOnboarding && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -1454,7 +1466,7 @@ const AlhambraBankApp = () => {
       )}
 
       {/* Main Content */}
-      <div className="pt-20 bg-white min-h-screen">
+      <div className="pt-32 bg-white min-h-screen">
         {renderContent()}
       </div>
 
