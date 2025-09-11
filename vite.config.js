@@ -15,8 +15,14 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5000,
     strictPort: false,
-    allowedHosts: 'all',
-    disableHostCheck: true,
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      '0.0.0.0',
+      '.manusvm.computer',
+      '5000-i9uichif0j8nuqbe0ck2m-00fc2b46.manusvm.computer',
+      '5003-i9uichif0j8nuqbe0ck2m-00fc2b46.manusvm.computer'
+    ],
     hmr: {
       port: 5000,
       host: '0.0.0.0'
