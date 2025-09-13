@@ -7,11 +7,14 @@ import SocialMediaIntegration from './SocialMediaIntegration.jsx';
 import OriginalContent from './OriginalContent.jsx';
 import StockTicker from './StockTicker.jsx';
 import NewsScroller from './NewsScroller.jsx';
-import { useLanguage, LanguageSelector } from './LanguageFix.jsx';
+import { LanguageProvider, useLanguageManager, LanguageSelector, withLanguage } from './LanguageManager.jsx';
+import EnhancedOnboarding from './EnhancedOnboarding.jsx';
+import DocumentUploadManager from './DocumentUploadManager.jsx';
+import CoBrowsingManager from './CoBrowsingManager.jsx';
 
 const AlhambraBankAppContent = () => {
-  // Use language hook
-  const { language, content, changeLanguage } = useLanguage();
+  // Use language manager
+  const { language, content, changeLanguage, forceUpdate } = useLanguageManager();
   const t = content;
   
   // Core state management
@@ -20,6 +23,12 @@ const AlhambraBankAppContent = () => {
   const [accountType, setAccountType] = useState('individual');
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
+  
+  // Enhanced component states
+  const [showEnhancedOnboarding, setShowEnhancedOnboarding] = useState(false);
+  const [showDocumentUpload, setShowDocumentUpload] = useState(false);
+  const [showCoBrowsing, setShowCoBrowsing] = useState(false);
+  const [uploadedDocuments, setUploadedDocuments] = useState([]);
 
   // Slideshow states
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -1169,10 +1178,7 @@ const AlhambraBankAppContent = () => {
       <nav className="bg-white text-red-800 py-3 px-4 fixed top-12 left-0 right-0 z-50 shadow-lg border-b border-red-200">
         <div className="container mx-auto flex flex-wrap items-center justify-between">
           {/* Language Selector */}
-          <LanguageSelector 
-            language={language} 
-            onLanguageChange={changeLanguage} 
-          />
+          <LanguageSelector />
 
           {/* Navigation Tabs */}
           <div className="flex flex-wrap items-center space-x-1">
@@ -1185,17 +1191,7 @@ const AlhambraBankAppContent = () => {
                 <button
                   onClick={() => {
                     setAccountType('individual');
-                    setCurrentStep(1);
-                    setShowOnboarding(true);
-                    // Check for saved progress after modal opens
-                    setTimeout(() => {
-                      const savedData = localStorage.getItem('alhambra_individual_progress');
-                      if (savedData) {
-                        if (confirm('You have a saved individual application. Would you like to continue where you left off?')) {
-                          loadProgress();
-                        }
-                      }
-                    }, 100);
+                    setShowEnhancedOnboarding(true);
                   }}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
                 >
@@ -1204,21 +1200,23 @@ const AlhambraBankAppContent = () => {
                 <button
                   onClick={() => {
                     setAccountType('corporate');
-                    setCurrentStep(1);
-                    setShowOnboarding(true);
-                    // Check for saved progress after modal opens
-                    setTimeout(() => {
-                      const savedData = localStorage.getItem('alhambra_corporate_progress');
-                      if (savedData) {
-                        if (confirm('You have a saved corporate application. Would you like to continue where you left off?')) {
-                          loadProgress();
-                        }
-                      }
-                    }, 100);
+                    setShowEnhancedOnboarding(true);
                   }}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
                 >
                   {t.openCorporate}
+                </button>
+                <button
+                  onClick={() => setShowDocumentUpload(true)}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
+                >
+                  Upload Documents
+                </button>
+                <button
+                  onClick={() => setShowCoBrowsing(true)}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
+                >
+                  Agent Assistance
                 </button>
               </div>
             </div>
@@ -1344,12 +1342,55 @@ const AlhambraBankAppContent = () => {
 
       {/* Communication Widget */}
       <CommunicationWidget language={language} />
+      
+      {/* Enhanced Onboarding */}
+      <EnhancedOnboarding 
+        isOpen={showEnhancedOnboarding}
+        onClose={() => setShowEnhancedOnboarding(false)}
+        accountType={accountType}
+      />
+      
+      {/* Document Upload Manager */}
+      {showDocumentUpload && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b flex justify-between items-center">
+              <h2 className="text-xl font-bold">Document Upload & KYC</h2>
+              <button 
+                onClick={() => setShowDocumentUpload(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            <DocumentUploadManager 
+              onDocumentUploaded={(docId) => {
+                setUploadedDocuments(prev => [...prev, docId]);
+              }}
+              onKycStatusChange={(status) => {
+                console.log('KYC Status:', status);
+              }}
+            />
+          </div>
+        </div>
+      )}
+      
+      {/* Co-browsing Manager */}
+      <CoBrowsingManager 
+        isActive={showCoBrowsing}
+        onClose={() => setShowCoBrowsing(false)}
+        documents={uploadedDocuments}
+      />
     </div>
   );
 };
 
 const AlhambraBankApp = () => {
-  return <AlhambraBankAppContent />;
+  return (
+    <LanguageProvider>
+      <AlhambraBankAppContent />
+    </LanguageProvider>
+  );
 };
 
 export default AlhambraBankApp;
