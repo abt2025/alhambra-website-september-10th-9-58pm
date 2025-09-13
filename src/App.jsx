@@ -7,12 +7,15 @@ import SocialMediaIntegration from './SocialMediaIntegration.jsx';
 import OriginalContent from './OriginalContent.jsx';
 import StockTicker from './StockTicker.jsx';
 import NewsScroller from './NewsScroller.jsx';
-import { multiLanguageContent, blogContent, marketInsightsContent } from './multiLanguageContent.js';
+import { useLanguage, LanguageSelector } from './LanguageFix.jsx';
 
-const AlhambraBankApp = () => {
+const AlhambraBankAppContent = () => {
+  // Use language hook
+  const { language, content, changeLanguage } = useLanguage();
+  const t = content;
+  
   // Core state management
   const [currentTab, setCurrentTab] = useState('home');
-  const [language, setLanguage] = useState('en');
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [accountType, setAccountType] = useState('individual');
   const [currentStep, setCurrentStep] = useState(1);
@@ -60,10 +63,7 @@ const AlhambraBankApp = () => {
     };
   }, []);
 
-  // Use comprehensive multi-language content
-  const t = multiLanguageContent[language];
-  const blogData = blogContent[language];
-  const marketData = marketInsightsContent[language];
+
 
   // Form handling functions
   const updateFormField = (fieldName, value) => {
@@ -1169,16 +1169,10 @@ const AlhambraBankApp = () => {
       <nav className="bg-white text-red-800 py-3 px-4 fixed top-12 left-0 right-0 z-50 shadow-lg border-b border-red-200">
         <div className="container mx-auto flex flex-wrap items-center justify-between">
           {/* Language Selector */}
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="bg-red-600 text-white border border-red-600 rounded px-3 py-1 text-sm"
-          >
-            <option value="en">🇺🇸 English</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="ar">🇸🇦 العربية</option>
-            <option value="zh">🇨🇳 中文</option>
-          </select>
+          <LanguageSelector 
+            language={language} 
+            onLanguageChange={changeLanguage} 
+          />
 
           {/* Navigation Tabs */}
           <div className="flex flex-wrap items-center space-x-1">
@@ -1336,7 +1330,7 @@ const AlhambraBankApp = () => {
       )}
 
       {/* Main Content */}
-      <div className="pt-32 bg-gradient-to-br from-red-50 to-red-100 min-h-screen">
+      <div key={language} className="pt-32 bg-gradient-to-br from-red-50 to-red-100 min-h-screen">
         {renderContent()}
       </div>
 
@@ -1352,6 +1346,10 @@ const AlhambraBankApp = () => {
       <CommunicationWidget language={language} />
     </div>
   );
+};
+
+const AlhambraBankApp = () => {
+  return <AlhambraBankAppContent />;
 };
 
 export default AlhambraBankApp;
