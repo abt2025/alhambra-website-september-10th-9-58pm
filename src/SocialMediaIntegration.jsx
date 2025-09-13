@@ -149,6 +149,12 @@ const SocialMediaIntegration = ({ language = 'en' }) => {
       color: 'bg-black hover:bg-gray-800'
     },
     {
+      name: 'TikTok',
+      icon: '🎵',
+      url: 'https://tiktok.com/@alhambrabank',
+      color: 'bg-black hover:bg-gray-900'
+    },
+    {
       name: 'Facebook',
       icon: '📘',
       url: 'https://facebook.com/alhambrabank',

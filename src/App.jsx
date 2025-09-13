@@ -7,6 +7,7 @@ import SocialMediaIntegration from './SocialMediaIntegration.jsx';
 import OriginalContent from './OriginalContent.jsx';
 import StockTicker from './StockTicker.jsx';
 import NewsScroller from './NewsScroller.jsx';
+import { multiLanguageContent, blogContent, marketInsightsContent } from './multiLanguageContent.js';
 
 const AlhambraBankApp = () => {
   // Core state management
@@ -59,83 +60,10 @@ const AlhambraBankApp = () => {
     };
   }, []);
 
-  // Translations
-  const translations = {
-    en: {
-      title: "Alhambra Bank & Trust",
-      tagline1: "MANAGING YOUR WEALTH",
-      tagline2: "PROTECTING YOUR LEGACY",
-      openAccount: "Open Account",
-      openIndividual: "👤 Open Individual Account",
-      openCorporate: "🏢 Open Corporate Account",
-      home: "Home",
-      about: "About",
-      services: "Services",
-      trading: "Trading",
-      marketInsights: "Market Insights",
-      aiServices: "AI Services",
-      blog: "Blog",
-      contact: "Contact",
-      customerLogin: "Customer Login",
-      scheduleCall: "Schedule a Call"
-    },
-    es: {
-      title: "Alhambra Bank & Trust",
-      tagline1: "GESTIONANDO SU RIQUEZA",
-      tagline2: "PROTEGIENDO SU LEGADO",
-      openAccount: "Abrir Cuenta",
-      openIndividual: "👤 Abrir Cuenta Individual",
-      openCorporate: "🏢 Abrir Cuenta Corporativa",
-      home: "Inicio",
-      about: "Acerca de",
-      services: "Servicios",
-      trading: "Trading",
-      marketInsights: "Perspectivas del Mercado",
-      aiServices: "Servicios IA",
-      blog: "Blog",
-      contact: "Contacto",
-      customerLogin: "Acceso Cliente",
-      scheduleCall: "Programar Llamada"
-    },
-    ar: {
-      title: "بنك الحمراء والثقة",
-      tagline1: "إدارة ثروتكم",
-      tagline2: "حماية إرثكم",
-      openAccount: "فتح حساب",
-      openIndividual: "👤 فتح حساب فردي",
-      openCorporate: "🏢 فتح حساب شركة",
-      home: "الرئيسية",
-      about: "حول",
-      services: "الخدمات",
-      trading: "التداول",
-      marketInsights: "رؤى السوق",
-      aiServices: "خدمات الذكاء الاصطناعي",
-      blog: "المدونة",
-      contact: "اتصل",
-      customerLogin: "دخول العميل",
-      scheduleCall: "جدولة مكالمة"
-    },
-    zh: {
-      title: "阿尔罕布拉银行信托",
-      tagline1: "管理您的财富",
-      tagline2: "保护您的遗产",
-      openAccount: "开户",
-      openIndividual: "👤 开设个人账户",
-      openCorporate: "🏢 开设企业账户",
-      home: "首页",
-      about: "关于",
-      services: "服务",
-      trading: "交易",
-      marketInsights: "市场洞察",
-      aiServices: "AI服务",
-      blog: "博客",
-      contact: "联系",
-      customerLogin: "客户登录",
-      scheduleCall: "预约通话"
-    }
-  };
-
-  const t = translations[language];
+  // Use comprehensive multi-language content
+  const t = multiLanguageContent[language];
+  const blogData = blogContent[language];
+  const marketData = marketInsightsContent[language];
 
   // Form handling functions
   const updateFormField = (fieldName, value) => {
@@ -673,7 +601,7 @@ const AlhambraBankApp = () => {
 
   // Content rendering functions
   const renderHome = () => (
-    <div className="bg-white min-h-screen">
+    <div className="bg-gradient-to-br from-red-50 to-red-100 min-h-screen">
       {/* Hero Section */}
       <div className="text-center py-12">
         <h1 className="text-3xl md:text-5xl font-bold text-red-600 mb-4">{t.title}</h1>
@@ -758,18 +686,18 @@ const AlhambraBankApp = () => {
       {/* Vision & Mission */}
       <div className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-red-700 text-center mb-12">Our Vision & Mission</h2>
+          <h2 className="text-3xl font-bold text-red-700 text-center mb-12">{t.visionTitle}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white border-2 border-red-200 text-red-800 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-              <h3 className="text-2xl font-bold mb-4 text-red-700">Vision Statement</h3>
+              <h3 className="text-2xl font-bold mb-4 text-red-700">{t.visionStatement}</h3>
               <p className="text-lg leading-relaxed">
-                We envision ourselves as a trusted global partner in wealth management, devoted to guiding individuals, corporations, and institutions on their paths to sustainable financial prosperity and stability, even as the economic landscape continues to evolve.
+                {t.visionText}
               </p>
             </div>
             <div className="bg-white border-2 border-red-200 text-red-800 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-              <h3 className="text-2xl font-bold mb-4 text-red-700">Mission Statement</h3>
+              <h3 className="text-2xl font-bold mb-4 text-red-700">{t.missionStatement}</h3>
               <p className="text-lg leading-relaxed">
-                We are dedicated to delivering impartial financial solutions and diversification strategies designed to protect and enhance your wealth. By emphasizing geopolitical neutrality and cross-border resilience, we develop flexible strategies that empower you to navigate market fluctuations with confidence, securing your financial future.
+                {t.missionText}
               </p>
             </div>
           </div>
@@ -780,7 +708,7 @@ const AlhambraBankApp = () => {
       <div className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-red-700 text-center mb-8">Message from Our Founder</h2>
+            <h2 className="text-3xl font-bold text-red-700 text-center mb-8">{t.founderTitle}</h2>
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="md:w-1/3">
                 <img 
@@ -795,18 +723,18 @@ const AlhambraBankApp = () => {
               <div className="md:w-2/3">
                 <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-red-500">
                   <p className="text-gray-700 leading-relaxed mb-6">
-                    The decision to start Alhambra Bank was rooted in a fundamental belief that everyone deserves to be treated with dignity, respect, and fairness, regardless of their skin color, religion, sexual orientation, or any other defining trait. Traditional banking systems have often been criticized for perpetuating inequality, whether through discriminatory practices, restricted access for underserved groups, lack of access for marginalized communities, or biases in decision-making.
+                    {t.founderMessage}
                   </p>
                   <p className="text-gray-700 leading-relaxed mb-6">
-                    Alhambra Bank was established to disrupt these conventions and forge a financial institution that genuinely serves everyone on equal terms. Our mission is to create a secure, inclusive, and empowering environment where both individuals and businesses can flourish without the threat of discrimination or exclusion.
+                    {t.founderMessage2}
                   </p>
                   <blockquote className="border-l-4 border-red-500 pl-4 italic text-gray-700 mb-6">
-                    "Alhambra Bank is more than just a bank—it's a movement toward a world where financial institutions reflect the values of fairness, equality, and respect for all. We are here to redefine what it means to be a bank, one that prioritizes people over profit and inclusion over exclusion."
+                    "{t.founderQuote}"
                   </blockquote>
                   <div className="text-right">
-                    <p className="font-semibold text-red-700">Ali Alsari</p>
-                    <p className="text-gray-600">Non-Executive Board Director</p>
-                    <p className="text-gray-600">Alhambra Bank</p>
+                    <p className="font-semibold text-red-700">{t.founderName}</p>
+                    <p className="text-gray-600">{t.founderTitle2}</p>
+                    <p className="text-gray-600">{t.founderCompany}</p>
                   </div>
                 </div>
               </div>
@@ -959,52 +887,29 @@ const AlhambraBankApp = () => {
   );
 
   const renderMarketInsights = () => (
-    <div className="bg-white min-h-screen pt-24 pb-16">
+    <div className="bg-gradient-to-br from-red-50 to-red-100 min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-red-700 text-center mb-12">Market Insights</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {[
-            {
-              title: "Global Economic Outlook",
-              date: "December 2024",
-              summary: "Analysis of global economic trends and their impact on investment strategies.",
-              category: "Economic Analysis"
-            },
-            {
-              title: "Cryptocurrency Market Update",
-              date: "December 2024",
-              summary: "Latest developments in digital assets and blockchain technology adoption.",
-              category: "Digital Assets"
-            },
-            {
-              title: "Emerging Markets Opportunities",
-              date: "November 2024",
-              summary: "Investment opportunities in developing economies and growth markets.",
-              category: "Investment Strategy"
-            },
-            {
-              title: "ESG Investment Trends",
-              date: "November 2024",
-              summary: "Environmental, Social, and Governance factors in modern investing.",
-              category: "Sustainable Finance"
-            }
-          ].map((insight, index) => (
-            <div key={index} className="bg-white border-2 border-red-200 text-red-800 shadow-lg hover:shadow-xl transition-shadow p-6 rounded-lg">
+        <h1 className="text-4xl font-bold text-red-900 text-center mb-12">{marketData.title}</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {marketData.insights.map((insight, index) => (
+            <div key={index} className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-300 shadow-lg hover:shadow-xl transition-all duration-300 p-6 rounded-lg hover:border-red-400">
               <div className="flex justify-between items-start mb-4">
-                <span className="bg-red-600 px-3 py-1 rounded-full text-sm">{insight.category}</span>
-                <span className="text-sm opacity-75">{insight.date}</span>
+                <span className="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">{insight.category}</span>
+                <span className="text-sm text-red-600 font-medium">{insight.date}</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">{insight.title}</h3>
-              <p className="mb-4">{insight.summary}</p>
-              <button 
-                onClick={() => {
-                  // Navigate to blog section for full article
-                  setCurrentTab('blog');
-                }}
-                className="text-red-600 hover:text-red-700 font-semibold"
-              >
-                Read More →
-              </button>
+              <h3 className="text-xl font-bold mb-3 text-red-900 hover:text-red-700 transition-colors">{insight.title}</h3>
+              <p className="mb-4 text-gray-700 leading-relaxed">{insight.excerpt}</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">{insight.readTime}</span>
+                <button 
+                  onClick={() => {
+                    alert(`Reading: ${insight.title}\n\nThis would open the full market insight in a production environment.`);
+                  }}
+                  className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold shadow-md hover:shadow-lg"
+                >
+                  {t.readMore} →
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -1075,64 +980,29 @@ const AlhambraBankApp = () => {
   );
 
   const renderBlog = () => (
-    <div className="bg-white min-h-screen pt-24 pb-16">
+    <div className="bg-gradient-to-br from-red-50 to-red-100 min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-red-700 text-center mb-12">Latest News & Updates</h1>
+        <h1 className="text-4xl font-bold text-red-900 text-center mb-12">{blogData.title}</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              title: "Alhambra Bank Launches New Digital Platform",
-              date: "December 15, 2024",
-              excerpt: "We're excited to announce the launch of our new digital banking platform with enhanced security features.",
-              category: "Company News"
-            },
-            {
-              title: "Understanding Offshore Banking Benefits",
-              date: "December 10, 2024",
-              excerpt: "A comprehensive guide to the advantages of offshore banking for international clients.",
-              category: "Educational"
-            },
-            {
-              title: "2025 Investment Outlook",
-              date: "December 5, 2024",
-              excerpt: "Our expert analysis of investment opportunities and market trends for the coming year.",
-              category: "Market Analysis"
-            },
-            {
-              title: "New Compliance Standards Implementation",
-              date: "November 30, 2024",
-              excerpt: "Alhambra Bank implements enhanced compliance measures to better serve our clients.",
-              category: "Regulatory"
-            },
-            {
-              title: "Sustainable Banking Initiatives",
-              date: "November 25, 2024",
-              excerpt: "Our commitment to environmental responsibility and sustainable banking practices.",
-              category: "Sustainability"
-            },
-            {
-              title: "Client Success Stories",
-              date: "November 20, 2024",
-              excerpt: "How Alhambra Bank has helped clients achieve their financial goals.",
-              category: "Success Stories"
-            }
-          ].map((post, index) => (
-            <div key={index} className="bg-white border-2 border-red-200 text-red-800 shadow-lg hover:shadow-xl transition-shadow p-6 rounded-lg">
+          {blogData.posts.map((post, index) => (
+            <div key={index} className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-300 shadow-lg hover:shadow-xl transition-all duration-300 p-6 rounded-lg hover:border-red-400">
               <div className="flex justify-between items-start mb-4">
-                <span className="bg-red-600 px-3 py-1 rounded-full text-sm">{post.category}</span>
-                <span className="text-sm opacity-75">{post.date}</span>
+                <span className="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">{blogData.categories[post.category]}</span>
+                <span className="text-sm text-red-600 font-medium">{post.date}</span>
               </div>
-              <h3 className="text-xl font-bold mb-3">{post.title}</h3>
-              <p className="mb-4">{post.excerpt}</p>
-              <button 
-                onClick={() => {
-                  // Navigate to blog section for full article
-                  setCurrentTab('blog');
-                }}
-                className="text-red-600 hover:text-red-700 font-semibold"
-              >
-                Read More →
-              </button>
+              <h3 className="text-xl font-bold mb-3 text-red-900 hover:text-red-700 transition-colors">{post.title}</h3>
+              <p className="mb-4 text-gray-700 leading-relaxed">{post.excerpt}</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">{post.readTime}</span>
+                <button 
+                  onClick={() => {
+                    alert(`Reading: ${post.title}\n\nThis would open the full article in a production environment.`);
+                  }}
+                  className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold shadow-md hover:shadow-lg"
+                >
+                  {t.readMore} →
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -1466,7 +1336,7 @@ const AlhambraBankApp = () => {
       )}
 
       {/* Main Content */}
-      <div className="pt-32 bg-white min-h-screen">
+      <div className="pt-32 bg-gradient-to-br from-red-50 to-red-100 min-h-screen">
         {renderContent()}
       </div>
 

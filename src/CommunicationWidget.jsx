@@ -141,7 +141,8 @@ const CommunicationWidget = ({ language = 'en' }) => {
       whatsapp: 'https://wa.me/13451234567',
       telegram: 'https://t.me/alhambrabank',
       wechat: 'AlhambraBank_Official',
-      messenger: 'https://m.me/alhambrabank'
+      messenger: 'https://m.me/alhambrabank',
+      tiktok: 'https://tiktok.com/@alhambrabank'
     };
 
     if (platform === 'wechat') {
@@ -313,6 +314,13 @@ const CommunicationWidget = ({ language = 'en' }) => {
         >
           <span className="text-2xl mr-2">💬</span>
           {t.messenger}
+        </button>
+        <button
+          onClick={() => handleSocialMediaClick('tiktok')}
+          className="flex items-center justify-center p-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors col-span-2"
+        >
+          <span className="text-2xl mr-2">🎵</span>
+          TikTok
         </button>
       </div>
       <div className="mt-4 text-center">

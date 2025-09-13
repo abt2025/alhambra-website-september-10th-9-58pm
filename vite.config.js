@@ -21,7 +21,9 @@ export default defineConfig({
       '0.0.0.0',
       '.manusvm.computer',
       '5000-i9uichif0j8nuqbe0ck2m-00fc2b46.manusvm.computer',
-      '5003-i9uichif0j8nuqbe0ck2m-00fc2b46.manusvm.computer'
+      '5003-i9uichif0j8nuqbe0ck2m-00fc2b46.manusvm.computer',
+      '5001-i9uichif0j8nuqbe0ck2m-00fc2b46.manusvm.computer',
+      '5002-i9uichif0j8nuqbe0ck2m-00fc2b46.manusvm.computer'
     ],
     hmr: {
       port: 5000,
