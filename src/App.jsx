@@ -1177,8 +1177,17 @@ const AlhambraBankAppContent = () => {
       {/* Navigation Header */}
       <nav className="bg-white text-red-800 py-3 px-4 fixed top-12 left-0 right-0 z-50 shadow-lg border-b border-red-200">
         <div className="container mx-auto flex flex-wrap items-center justify-between">
-          {/* Language Selector */}
-          <LanguageSelector />
+          {/* Logo and Language Selector */}
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/alhambra-bank-logo.png" 
+              alt="Alhambra Bank & Trust" 
+              className="h-12 w-auto hover:opacity-80 transition-opacity"
+              onClick={() => setCurrentTab('home')}
+              style={{ cursor: 'pointer' }}
+            />
+            <LanguageSelector />
+          </div>
 
           {/* Navigation Tabs */}
           <div className="flex flex-wrap items-center space-x-1">
