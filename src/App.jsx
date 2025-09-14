@@ -637,13 +637,44 @@ const AlhambraBankAppContent = () => {
           <h2 className="text-3xl font-bold text-red-700 text-center mb-12">Why Alhambra Bank & Trust</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: "🏛️", title: "Regulatory Excellence", desc: "Fully licensed and regulated by CIMA" },
-              { icon: "🌍", title: "Global Reach", desc: "Serving clients worldwide with local expertise" },
-              { icon: "🔒", title: "Privacy & Security", desc: "Bank-grade security and confidentiality" },
-              { icon: "🤖", title: "AI-Enhanced Banking", desc: "Cutting-edge technology for modern banking" }
+              { 
+                image: "/regulatory-excellence-icon.jpg", 
+                icon: "🏛️", 
+                title: "Regulatory Excellence", 
+                desc: "Fully licensed and regulated by CIMA" 
+              },
+              { 
+                image: "/global-reach-icon.jpg", 
+                icon: "🌍", 
+                title: "Global Reach", 
+                desc: "Serving clients worldwide with local expertise" 
+              },
+              { 
+                image: "/privacy-security-icon.jpg", 
+                icon: "🔒", 
+                title: "Privacy & Security", 
+                desc: "Bank-grade security and confidentiality" 
+              },
+              { 
+                image: "/ai-banking-icon.jpg", 
+                icon: "🤖", 
+                title: "AI-Enhanced Banking", 
+                desc: "Cutting-edge technology for modern banking" 
+              }
             ].map((item, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-red-500">
-                <div className="text-4xl mb-4">{item.icon}</div>
+                {item.image ? (
+                  <img 
+                    src={item.image} 
+                    alt={item.title}
+                    className="w-16 h-16 mb-4 rounded-lg object-cover shadow-md border border-red-200"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                ) : null}
+                <div className="text-4xl mb-4" style={{display: item.image ? 'none' : 'block'}}>{item.icon}</div>
                 <h3 className="text-xl font-semibold text-red-700 mb-2">{item.title}</h3>
                 <p className="text-gray-600">{item.desc}</p>
               </div>
@@ -666,10 +697,26 @@ const AlhambraBankAppContent = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { icon: "🏛️", title: "Regulatory Excellence", desc: "Licensed by CIMA (Cayman Islands Monetary Authority) with world-class regulatory framework" },
-                  { icon: "💰", title: "Tax Neutrality", desc: "No direct taxation on individuals or corporations - optimal for wealth preservation" },
-                  { icon: "🔒", title: "Asset Protection", desc: "Robust asset protection laws and banking secrecy provisions" },
-                  { icon: "🌍", title: "Global Connectivity", desc: "Strategic location between Americas, Europe, and Asia with excellent infrastructure" },
+                  { 
+                    image: "/regulatory-excellence-luxury.jpg", 
+                    title: "Regulatory Excellence", 
+                    desc: "Licensed by CIMA (Cayman Islands Monetary Authority) with world-class regulatory framework" 
+                  },
+                  { 
+                    image: "/tax-neutrality-luxury.jpg", 
+                    title: "Tax Neutrality", 
+                    desc: "No direct taxation on individuals or corporations - optimal for wealth preservation" 
+                  },
+                  { 
+                    image: "/asset-protection-luxury.jpg", 
+                    title: "Asset Protection", 
+                    desc: "Robust asset protection laws and banking secrecy provisions" 
+                  },
+                  { 
+                    image: "/global-connectivity-luxury.jpg", 
+                    title: "Global Connectivity", 
+                    desc: "Strategic location between Americas, Europe, and Asia with excellent infrastructure" 
+                  },
                   { icon: "⚖️", title: "Legal Framework", desc: "English common law system with sophisticated financial legislation" },
                   { icon: "🏦", title: "Banking Hub", desc: "Home to 40 of the world's top 50 banks and leading financial institutions" },
                   { icon: "📈", title: "Economic Stability", desc: "AAA sovereign credit rating and stable political environment" },
@@ -677,7 +724,20 @@ const AlhambraBankAppContent = () => {
                 ].map((item, index) => (
                   <div key={index} className="bg-gray-50 p-4 rounded-lg border border-red-200 hover:shadow-md transition-shadow">
                     <div className="flex items-center mb-2">
-                      <span className="text-2xl mr-3">{item.icon}</span>
+                      {item.image ? (
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="w-12 h-12 mr-3 rounded-lg object-cover shadow-md border border-red-200"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'inline';
+                          }}
+                        />
+                      ) : (
+                        <span className="text-2xl mr-3">{item.icon}</span>
+                      )}
+                      <span className="text-2xl mr-3" style={{display: item.image ? 'none' : 'inline'}}>{item.icon}</span>
                       <h3 className="text-lg font-semibold text-red-700">{item.title}</h3>
                     </div>
                     <p className="text-gray-600 text-sm">{item.desc}</p>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguageManager } from './LanguageManager.jsx';
+import QRSessionTransfer from './QRSessionTransfer.jsx';
+import SessionManager from './SessionManager.js';
 
 const EnhancedOnboarding = ({ isOpen, onClose, accountType = 'individual' }) => {
   const { language, content } = useLanguageManager();
@@ -8,6 +10,9 @@ const EnhancedOnboarding = ({ isOpen, onClose, accountType = 'individual' }) => 
   const [agentAssistanceRequested, setAgentAssistanceRequested] = useState(false);
   const [documents, setDocuments] = useState([]);
   const [kycStatus, setKycStatus] = useState('pending');
+  const [sessionId, setSessionId] = useState(null);
+  const [showQRTransfer, setShowQRTransfer] = useState(false);
+  const [sessionManager] = useState(new SessionManager());
 
   // Multi-language onboarding content
   const onboardingContent = {
@@ -251,6 +256,65 @@ const EnhancedOnboarding = ({ isOpen, onClose, accountType = 'individual' }) => 
 
   const t = onboardingContent[language] || onboardingContent.en;
 
+  // Initialize session management
+  useEffect(() => {
+    if (isOpen) {
+      // Check for existing session or create new one
+      let existingSession = sessionManager.loadSession();
+      
+      // Check for session transfer from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const transferSession = urlParams.get('session');
+      
+      if (transferSession) {
+        // Load session from transfer
+        existingSession = sessionManager.loadFromTransfer(transferSession);
+        if (existingSession) {
+          setCurrentStep(existingSession.currentStep || 1);
+          setFormData(existingSession.formData || {});
+          setDocuments(existingSession.documents || []);
+          setKycStatus(existingSession.kycStatus || 'pending');
+          // Clear URL parameter
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+      
+      if (!existingSession) {
+        // Create new session
+        const newSessionId = sessionManager.generateSessionId();
+        setSessionId(newSessionId);
+        sessionManager.saveSession({
+          sessionId: newSessionId,
+          currentStep: 1,
+          formData: {},
+          documents: [],
+          kycStatus: 'pending',
+          accountType: accountType
+        });
+      } else {
+        setSessionId(existingSession.sessionId);
+      }
+    }
+  }, [isOpen, accountType]);
+
+  // Save session data whenever state changes
+  useEffect(() => {
+    if (sessionId) {
+      sessionManager.updateSession({
+        currentStep,
+        formData,
+        documents,
+        kycStatus,
+        accountType
+      });
+    }
+  }, [currentStep, formData, documents, kycStatus, sessionId]);
+
+  // Handle session transfer
+  const handleSessionTransfer = (show) => {
+    setShowQRTransfer(show);
+  };
+
   // Handle document upload
   const handleDocumentUpload = (event, docType) => {
     const files = Array.from(event.target.files);
@@ -292,12 +356,21 @@ const EnhancedOnboarding = ({ isOpen, onClose, accountType = 'individual' }) => 
         <div className="bg-red-600 text-white p-6 rounded-t-lg">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">{t.title}</h2>
-            <button 
-              onClick={onClose}
-              className="text-white hover:text-red-200 text-2xl font-bold"
-            >
-              ×
-            </button>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => setShowQRTransfer(true)}
+                className="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-lg text-sm transition-colors flex items-center"
+                title="Continue on another device"
+              >
+                📱 QR Transfer
+              </button>
+              <button 
+                onClick={onClose}
+                className="text-white hover:text-red-200 text-2xl font-bold"
+              >
+                ×
+              </button>
+            </div>
           </div>
           
           {/* Progress Steps */}
@@ -592,6 +665,15 @@ const EnhancedOnboarding = ({ isOpen, onClose, accountType = 'individual' }) => 
           </div>
         </div>
       </div>
+      
+      {/* QR Code Session Transfer */}
+      <QRSessionTransfer
+        sessionId={sessionId}
+        currentStep={currentStep}
+        formData={formData}
+        onSessionTransfer={handleSessionTransfer}
+        isVisible={showQRTransfer}
+      />
     </div>
   );
 };
